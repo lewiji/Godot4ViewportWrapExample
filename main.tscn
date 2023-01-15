@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3 uid="uid://qw3lduvyq1ri"]
+
+[ext_resource type="PackedScene" uid="uid://bkla3n0kaq2ge" path="res://enemies.tscn" id="1_5mxrc"]
+[ext_resource type="Script" path="res://Player.gd" id="2_yifkp"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_v5ej2"]
+viewport_path = NodePath("SubViewportContainer/SubViewport")
+
+[sub_resource type="Gradient" id="Gradient_s3mj5"]
+colors = PackedColorArray(0.941736, 0.400813, 0.0507559, 1, 0.333711, 0.134834, 0.60414, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_36hai"]
+gradient = SubResource("Gradient_s3mj5")
+fill = 1
+
+[node name="Main" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+disable_3d = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Enemies" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_5mxrc")]
+
+[node name="WorldWrap" type="Control" parent="."]
+layout_mode = 2
+
+[node name="RightWrap" type="TextureRect" parent="WorldWrap"]
+layout_mode = 2
+offset_left = 1152.0
+offset_right = 2304.0
+offset_bottom = 648.0
+texture = SubResource("ViewportTexture_v5ej2")
+
+[node name="LeftWrap" type="TextureRect" parent="WorldWrap"]
+layout_mode = 2
+offset_left = -1152.0
+offset_bottom = 648.0
+texture = SubResource("ViewportTexture_v5ej2")
+
+[node name="Player" type="Sprite2D" parent="."]
+position = Vector2(100, 324)
+texture = SubResource("GradientTexture2D_36hai")
+script = ExtResource("2_yifkp")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+current = true
+limit_top = 0
+limit_bottom = 0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+offset_right = 1152.0
+offset_bottom = 26.0
+size_flags_vertical = 0
+
+[node name="PlayerCoords" type="Label" parent="CanvasLayer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "{x, y}"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SeamlessToggle" type="CheckButton" parent="CanvasLayer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Seamless BG"
